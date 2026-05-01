@@ -33,7 +33,7 @@
     "npm:@ollama/pi-web-search"
   ],
   "prompts": [
-    "~/dotfiles/agents/prompts"
+    "prompts"
   ],
   "enabledModels": [
     "kimi-*"
