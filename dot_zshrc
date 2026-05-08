@@ -104,8 +104,8 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 export PATH=$HOME/bin:/usr/local/bin:$HOME/.local/bin:$PATH
-. "$HOME/.cargo/env"
-. "$HOME/.cargo/bin"
+[[ -f ~/.cargo/env ]] && source ~/.cargo/env
+[[ -d ~/.cargo/bin ]] && export PATH="$HOME/.cargo/bin:$PATH"
 eval "$(mise activate zsh)"
 eval "$(mise activate zsh)"
 
