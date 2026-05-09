@@ -1,6 +1,5 @@
 {
   "defaultProvider": "ollama",
-  "defaultModel": "kimi-k2.6:cloud",
   "defaultThinkingLevel": "medium",
   "hideThinkingBlock": false,
   "theme": "dark",
@@ -34,9 +33,6 @@
   ],
   "prompts": [
     "prompts"
-  ],
-  "enabledModels": [
-    "kimi-*"
   ],
   "lastChangelogVersion": "0.74.0"
 }

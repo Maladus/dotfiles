@@ -108,7 +108,6 @@ export default async function (pi: ExtensionAPI) {
     baseUrl: "https://ollama.com/v1",
     api: "openai-completions",
     authHeader: true,
-    ...(apiKey ? { apiKey: "OLLAMA_API_KEY" } : {}),
-    models,
+    ...(apiKey ? { apiKey: "OLLAMA_API_KEY", models } : {}),
   });
 }
