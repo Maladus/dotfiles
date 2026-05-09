@@ -14,6 +14,6 @@ if [ -f /.dockerenv ] || grep -qa 'podman\|docker' /proc/1/cgroup 2>/dev/null; t
     ~/.local/bin/mise use --global npm:@earendil-works/pi-coding-agent
 fi
 
-# Apply dotfiles from current repo mmm
+# Apply dotfiles from current repo
 ~/.local/bin/mise exec -- chezmoi -S . -v apply
 
