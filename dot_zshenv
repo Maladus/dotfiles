@@ -1,1 +1,5 @@
+# Cargo
 [[ -f ~/.cargo/env ]] && source ~/.cargo/env
+
+# Mise shims for non-interactive shells (ssh, scripts, etc.)
+export PATH="$HOME/.local/share/mise/shims:$PATH"
