@@ -112,3 +112,6 @@ eval "$(mise activate zsh)"
 # opencode
 export PATH=/home/martin/.opencode/bin:$PATH
 export PATH="$HOME/.npm-global/bin:$PATH"
+
+# DevPod shortcut for this project
+alias devup='devpod up /home/martin/work/harnes-container --dotfiles git@github.com:Maladus/dotfiles.git'
