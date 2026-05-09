@@ -5,15 +5,8 @@ set -e
 curl https://mise.run | sh
 eval "$(~/.local/bin/mise activate bash)"
 
-# Install Chezmoi via Mise
-mise use --global chezmoi@2.70.3
-
-# Install Node + Pi only in container environments
-if [ -f /.dockerenv ] || grep -qa 'podman\|docker' /proc/1/cgroup 2>/dev/null; then
-    ~/.local/bin/mise use --global node@lts
-    ~/.local/bin/mise use --global npm:@earendil-works/pi-coding-agent
-fi
+# Install tools declared in mise.toml (chezmoi, node, pi, etc.)
+~/.local/bin/mise install
 
 # Apply dotfiles from current repo
 ~/.local/bin/mise exec -- chezmoi -S . -v apply
-

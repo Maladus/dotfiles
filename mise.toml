@@ -1,0 +1,4 @@
+[tools]
+chezmoi = "2.70.3"
+node = "lts"
+"npm:@earendil-works/pi-coding-agent" = "latest"
