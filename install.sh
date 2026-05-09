@@ -11,3 +11,6 @@ eval "$(~/.local/bin/mise activate bash)"
 
 # Apply dotfiles from current repo
 ~/.local/bin/mise exec -- chezmoi -S . -v apply
+
+# Trust the chezmoi-applied mise.toml so shims work in new shells
+~/.local/bin/mise trust ~/mise.toml
