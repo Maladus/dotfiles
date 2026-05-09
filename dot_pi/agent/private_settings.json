@@ -1,5 +1,5 @@
 {
-  "defaultProvider": "ollama",
+  "defaultProvider": "ollama-cloud",
   "defaultThinkingLevel": "medium",
   "hideThinkingBlock": false,
   "theme": "dark",
@@ -28,11 +28,10 @@
       "maxRetryDelayMs": 60000
     }
   },
-  "packages": [
-    "npm:@ollama/pi-web-search"
-  ],
+  "packages": [],
   "prompts": [
     "prompts"
   ],
-  "lastChangelogVersion": "0.74.0"
+  "lastChangelogVersion": "0.74.0",
+  "defaultModel": "kimi-k2.6"
 }
