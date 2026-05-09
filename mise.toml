@@ -1,4 +1,6 @@
 [tools]
 chezmoi = "2.70.3"
 node = "lts"
+neovim = "stable"
+tmux = "latest"
 "npm:@earendil-works/pi-coding-agent" = "latest"
