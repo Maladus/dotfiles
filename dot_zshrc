@@ -105,7 +105,6 @@ source $ZSH/oh-my-zsh.sh
 
 export PATH=$HOME/bin:/usr/local/bin:$HOME/.local/bin:$PATH
 [[ -d ~/.cargo/bin ]] && export PATH="$HOME/.cargo/bin:$PATH"
-eval "$(mise activate zsh)"
 
 # opencode
 export PATH="$HOME/.opencode/bin:$PATH"

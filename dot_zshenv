@@ -1,5 +1,6 @@
 # Cargo
 [[ -f ~/.cargo/env ]] && source ~/.cargo/env
 
-# Mise shims for non-interactive shells (ssh, scripts, etc.)
-export PATH="$HOME/.local/share/mise/shims:$PATH"
+# Activate mise for all zsh invocations (interactive + non-interactive)
+# This makes shims resolve versions correctly in ssh sessions
+[[ -f ~/.local/bin/mise ]] && eval "$(~/.local/bin/mise activate zsh)"
