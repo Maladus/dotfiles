@@ -5,7 +5,8 @@ set -e
 curl https://mise.run | sh
 eval "$(~/.local/bin/mise activate bash)"
 
-# Install tools declared in mise.toml (chezmoi, node, pi, etc.)
+# Trust and install tools declared in mise.toml
+~/.local/bin/mise trust ./mise.toml
 ~/.local/bin/mise install
 
 # Apply dotfiles from current repo
