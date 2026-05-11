@@ -110,5 +110,5 @@ export PATH=$HOME/bin:/usr/local/bin:$HOME/.local/bin:$PATH
 export PATH="$HOME/.opencode/bin:$PATH"
 export PATH="$HOME/.npm-global/bin:$PATH"
 
-# DevPod shortcut for this project
-alias devup='devpod up /home/martin/work/harnes-container --dotfiles git@github.com:Maladus/dotfiles.git'
+# DevPod shortcut — runs devpod up from current directory
+alias devup='devpod up . --dotfiles git@github.com:Maladus/dotfiles.git'
