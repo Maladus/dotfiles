@@ -113,8 +113,7 @@ export PATH="$HOME/.npm-global/bin:$PATH"
 # DevPod shortcut — runs devpod up from current directory
 alias devup='devpod up . --dotfiles https://github.com/Maladus/dotfiles.git'
 
-# Open VS Code attached to the dev container for the current directory
-# Supports both DevPod and VS Code dev containers
+# Find running dev container (DevPod or VS Code) that mounts current directory
 _devcode_find_container() {
     local pwd="${PWD}"
     local c devpod_c vscode_c
@@ -142,27 +141,9 @@ _devcode_find_container() {
     fi
 }
 
-devcode() {
-    local result="$(_devcode_find_container)"
-    if [[ -z "$result" ]]; then
-        echo "No running dev container found for ${PWD}" >&2
-        return 1
-    fi
-
-    local type="${result%%:*}"
-    local cid="${result#*:}"
-
-    if [[ "$type" == "devpod" ]]; then
-        code --folder-uri "vscode-remote://attached-container+${cid}/workspaces/$(basename "$PWD")"
-    else
-        # VS Code dev container
-        code --folder-uri "vscode-remote://attached-container+${cid}/workspace"
-    fi
-}
-
 # Docker exec into container that mounts the current directory
 # Works with both DevPod and VS Code dev containers
-dcontainer() {
+devdock() {
     local result="$(_devcode_find_container)"
     if [[ -z "$result" ]]; then
         echo "No running dev container found for ${PWD}" >&2
