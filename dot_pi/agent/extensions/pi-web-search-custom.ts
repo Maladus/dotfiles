@@ -1,5 +1,6 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { Type } from "@sinclair/typebox";
+import { Text } from "@earendil-works/pi-tui";
 import { readFileSync } from "node:fs";
 import { homedir } from "node:os";
 // Custom Ollama Web Search + Fetch for pi
@@ -58,6 +59,9 @@ export default function (pi: ExtensionAPI) {
     label: "Web Search",
     description:
       "Search the web for real-time information using Ollama's web_search API. Uses the same auth key as the ollama-cloud provider (from auth.json via OLLAMA_API_KEY env var).",
+    promptGuidelines: [
+      "Use web_search with max_results 5 (default) for most queries. Only increase max_results to 10 or more when doing deep research that explicitly requires broad source coverage.",
+    ],
     parameters: Type.Object({
       query: Type.String({ description: "The search query to execute" }),
       max_results: Type.Optional(
@@ -118,6 +122,43 @@ export default function (pi: ExtensionAPI) {
         }
         throw error;
       }
+    },
+
+    renderResult(result, { isPartial, expanded }, theme) {
+      const results = (result.details as { results?: Array<{ title: string; url: string; content: string }> })?.results;
+
+      if (isPartial || !results) {
+        return new Text(theme.fg("warning", "Searching..."), 0, 0);
+      }
+
+      if (results.length === 0) {
+        return new Text(theme.fg("dim", "No results found."), 0, 0);
+      }
+
+      // Always: numbered title + url
+      const headerLines: string[] = [];
+      for (let i = 0; i < results.length; i++) {
+        const r = results[i];
+        headerLines.push(`${theme.fg("dim", `${i + 1}.`)} ${theme.fg("accent", r.title)}`);
+        headerLines.push(`   ${theme.fg("dim", r.url)}`);
+      }
+
+      let text = headerLines.join("\n");
+
+      if (expanded) {
+        // Body: title + content for each result
+        for (let i = 0; i < results.length; i++) {
+          const r = results[i];
+          text += `\n${theme.fg("dim", `${i + 1}.`)} ${theme.fg("accent", r.title)}`;
+          for (const line of r.content.split("\n")) {
+            if (line.trim()) text += `\n   ${line}`;
+          }
+          text += "\n";
+        }
+      } else {
+        text += `\n${theme.fg("muted", "ctrl+e to expand content")}`;      }
+
+      return new Text(text, 0, 0);
     },
   });
 

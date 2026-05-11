@@ -3,6 +3,8 @@
  *
  * Uses pi's built-in openai-completions streaming.
  * Dynamically fetches correct contextWindow from Ollama model metadata.
+ * Uses the full advertised context length by default.
+ * Set OLLAMA_CONTEXT_WINDOW to override when a model advertises more than the host allows.
  */
 
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
@@ -18,19 +20,33 @@ interface OllamaShowResponse {
 const DEFAULT_CONTEXT_WINDOW = 131_072;
 const DEFAULT_MAX_TOKENS = 4096;
 
+/** If set, hard-caps contextWindow to this value regardless of what api/show returns. */
+const OVERRIDE_CONTEXT_WINDOW = process.env.OLLAMA_CONTEXT_WINDOW
+  ? parseInt(process.env.OLLAMA_CONTEXT_WINDOW, 10)
+  : null;
+
 /** Extract context_length from model_info, accounting for varying architecture keys. */
 function extractContextLength(showResponse: OllamaShowResponse): number {
   const info = showResponse.model_info;
-  if (!info) return DEFAULT_CONTEXT_WINDOW;
+  if (!info) {
+    return OVERRIDE_CONTEXT_WINDOW ?? DEFAULT_CONTEXT_WINDOW;
+  }
 
-  // Architecture-specific keys like: llama.context_length, gptoss.context_length, qwen2.context_length
+  let found: number | null = null;
+
   for (const [key, value] of Object.entries(info)) {
     if (key.endsWith(".context_length") && typeof value === "number") {
-      return value;
+      found = value;
+      break;
     }
   }
 
-  return DEFAULT_CONTEXT_WINDOW;
+  // Use the model's advertised limit, but respect env override if smaller.
+  let result = found ?? DEFAULT_CONTEXT_WINDOW;
+  if (OVERRIDE_CONTEXT_WINDOW !== null) {
+    result = Math.min(result, OVERRIDE_CONTEXT_WINDOW);
+  }
+  return result;
 }
 
 async function fetchModelMetadata(
@@ -76,9 +92,7 @@ export default async function (pi: ExtensionAPI) {
     discovered.length > 0
       ? discovered.map(async (m) => {
           const metadata = await fetchModelMetadata(m.name, apiKey);
-          const contextWindow = metadata
-            ? extractContextLength(metadata)
-            : DEFAULT_CONTEXT_WINDOW;
+          const contextWindow = extractContextLength(metadata);
 
           return {
             id: m.name,
@@ -97,7 +111,7 @@ export default async function (pi: ExtensionAPI) {
             reasoning: false,
             input: ["text"] as ("text" | "image")[],
             cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
-            contextWindow: 131_072,
+            contextWindow: OVERRIDE_CONTEXT_WINDOW ?? DEFAULT_CONTEXT_WINDOW,
             maxTokens: DEFAULT_MAX_TOKENS,
           }),
         ],
