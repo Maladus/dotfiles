@@ -8,6 +8,11 @@
 # Point mise to the global config so tools work in any directory
 export MISE_CONFIG_FILE="$HOME/mise.toml"
 
+# Ensure UTF-8 locale so Unicode symbols (arrows, checkmarks, etc.) render correctly
+# in Docker exec/SSH/devpod sessions that inherit the environment
+export LANG="${LANG:-en_US.UTF-8}"
+export LC_ALL="${LC_ALL:-en_US.UTF-8}"
+
 export PATH=$HOME/bin:/usr/local/bin:$HOME/.local/bin:$PATH
 [[ -d ~/.cargo/bin ]] && export PATH="$HOME/.cargo/bin:$PATH"
 
