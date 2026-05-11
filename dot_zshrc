@@ -111,4 +111,42 @@ export PATH="$HOME/.opencode/bin:$PATH"
 export PATH="$HOME/.npm-global/bin:$PATH"
 
 # DevPod shortcut — runs devpod up from current directory
-alias devup='devpod up . --dotfiles git@github.com:Maladus/dotfiles.git'
+alias devup='devpod up . --dotfiles https://github.com/Maladus/dotfiles.git'
+
+# Open VS Code attached to the DevPod Docker container for the current directory
+devcode() {
+    local pwd="${PWD}"
+    local cid
+    for c in $(docker ps -q --filter "label=devpod.user"); do
+        if docker inspect "$c" --format '{{json .Mounts}}' | grep -qF "\"Source\":\"$pwd\""; then
+            cid="$c"
+            break
+        fi
+    done
+    if [[ -z "$cid" ]]; then
+        echo "No running devpod container found for $pwd" >&2
+        return 1
+    fi
+    code --folder-uri "vscode-remote://attached-container+${cid}/workspaces/$(basename "$pwd")"
+}
+export GITHUB_TOKEN=
+
+# Docker exec into container matching current folder name
+dcontainer() {
+    local base
+    base=$(basename "$PWD")
+
+    local cname
+    cname=$(docker ps --format '{{.Names}}' | grep "$base" || true)
+
+    if [[ -z "$cname" ]]; then
+        echo "No running container matching '$base' found" >&2
+        return 1
+    elif [[ $(echo "$cname" | wc -l | tr -d ' ') -gt 1 ]]; then
+        echo "Multiple containers match '$base':" >&2
+        echo "$cname" >&2
+        return 1
+    fi
+
+    docker exec -it "$cname" /bin/zsh
+}
