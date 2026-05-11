@@ -113,37 +113,61 @@ export PATH="$HOME/.npm-global/bin:$PATH"
 # DevPod shortcut — runs devpod up from current directory
 alias devup='devpod up . --dotfiles https://github.com/Maladus/dotfiles.git'
 
-# Open VS Code attached to the DevPod Docker container for the current directory
-devcode() {
+# Open VS Code attached to the dev container for the current directory
+# Supports both DevPod and VS Code dev containers
+_devcode_find_container() {
     local pwd="${PWD}"
-    local cid
+    local c devpod_c vscode_c
+
+    # Try DevPod container first
     for c in $(docker ps -q --filter "label=devpod.user"); do
         if docker inspect "$c" --format '{{json .Mounts}}' | grep -qF "\"Source\":\"$pwd\""; then
-            cid="$c"
+            devpod_c="$c"
             break
         fi
     done
-    if [[ -z "$cid" ]]; then
-        echo "No running devpod container found for $pwd" >&2
+
+    # Try VS Code dev container
+    for c in $(docker ps -q --filter "label=devcontainer.config_file"); do
+        if docker inspect "$c" --format '{{json .Config.Labels}}' | grep -qF "\"devcontainer.config_file\":\"$pwd/.devcontainer/devcontainer.json\""; then
+            vscode_c="$c"
+            break
+        fi
+    done
+
+    if [[ -n "$devpod_c" ]]; then
+        echo "devpod:$devpod_c"
+    elif [[ -n "$vscode_c" ]]; then
+        echo "vscode:$vscode_c"
+    fi
+}
+
+devcode() {
+    local result="$(_devcode_find_container)"
+    if [[ -z "$result" ]]; then
+        echo "No running dev container found for ${PWD}" >&2
         return 1
     fi
-    code --folder-uri "vscode-remote://attached-container+${cid}/workspaces/$(basename "$pwd")"
+
+    local type="${result%%:*}"
+    local cid="${result#*:}"
+
+    if [[ "$type" == "devpod" ]]; then
+        code --folder-uri "vscode-remote://attached-container+${cid}/workspaces/$(basename "$PWD")"
+    else
+        # VS Code dev container
+        code --folder-uri "vscode-remote://attached-container+${cid}/workspace"
+    fi
 }
-export GITHUB_TOKEN=
 
 # Docker exec into container that mounts the current directory
+# Works with both DevPod and VS Code dev containers
 dcontainer() {
-    local pwd="${PWD}"
-    local cid
-    for c in $(docker ps -q); do
-        if docker inspect "$c" --format '{{json .Mounts}}' | grep -qF "\"Source\":\"$pwd\""; then
-            cid="$c"
-            break
-        fi
-    done
-    if [[ -z "$cid" ]]; then
-        echo "No running container found mounting $pwd" >&2
+    local result="$(_devcode_find_container)"
+    if [[ -z "$result" ]]; then
+        echo "No running dev container found for ${PWD}" >&2
         return 1
     fi
+    local cid="${result#*:}"
     docker exec -it "$cid" /bin/zsh
 }
