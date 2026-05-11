@@ -1,0 +1,2 @@
+# Source .bashrc from login shells so interactive config is always loaded
+[[ -f ~/.bashrc ]] && source ~/.bashrc

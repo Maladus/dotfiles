@@ -1,9 +1,9 @@
 # Cargo
 [[ -f ~/.cargo/env ]] && source ~/.cargo/env
 
-# Activate mise for all zsh invocations (interactive + non-interactive)
+# Activate mise for all bash invocations (interactive + non-interactive)
 # This makes shims resolve versions correctly in ssh sessions
-[[ -f ~/.local/bin/mise ]] && eval "$(~/.local/bin/mise activate zsh)"
+[[ -f ~/.local/bin/mise ]] && eval "$(~/.local/bin/mise activate bash)"
 
 # Point mise to the global config so tools work in any directory
 export MISE_CONFIG_FILE="$HOME/mise.toml"
@@ -14,3 +14,6 @@ export PATH=$HOME/bin:/usr/local/bin:$HOME/.local/bin:$PATH
 # opencode
 export PATH="$HOME/.opencode/bin:$PATH"
 export PATH="$HOME/.npm-global/bin:$PATH"
+
+# DevPod shortcut - runs devpod up from current directory
+alias devup='devpod up . --dotfiles git@github.com:Maladus/dotfiles.git'
