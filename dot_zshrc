@@ -150,5 +150,5 @@ devdock() {
         return 1
     fi
     local cid="${result#*:}"
-    docker exec -it "$cid" /bin/zsh
+    docker exec -it -e TERM="$TERM" "$cid" /bin/zsh
 }
