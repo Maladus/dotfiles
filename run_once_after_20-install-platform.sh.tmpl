@@ -1,0 +1,23 @@
+#!/bin/bash
+set -e
+
+echo "=== Platform-specific setup ==="
+
+{{ if or (env "REMOTE_CONTAINERS") (env "DEVCONTAINER") }}
+# ─── Devcontainer ──────────────────────────────────────────────
+echo "Detected: Devcontainer"
+# Devpod is provided by the container infrastructure
+# Add container-only setup here if needed
+
+{{ else if env "WSL_DISTRO_NAME" }}
+# ─── WSL ──────────────────────────────────────────────────────
+echo "Detected: WSL ({{ env "WSL_DISTRO_NAME" }})"
+# Add WSL-only tweaks here (e.g. systemd, Windows interop)
+
+{{ else }}
+# ─── Bare metal / Cloud VM ──────────────────────────────────
+echo "Detected: Bare metal / VM"
+
+{{ end }}
+
+echo "=== Platform-specific setup complete ==="

@@ -1,19 +1,19 @@
 #!/bin/bash
 set -e
 
-# Install Mise
-curl https://mise.run | sh
+REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
 
-# Trust configs BEFORE activating shell hooks (prevents parse errors)
-~/.local/bin/mise trust ./mise.toml
+echo "=== Devcontainer bootstrap from $REPO_DIR ==="
 
-# Pre-trust the target path so post-chezmoi shells don't error
-~/.local/bin/mise trust ~/mise.toml 2>/dev/null || true
+# 1. Install mise
+if [[ ! -x ~/.local/bin/mise ]]; then
+    curl https://mise.run | sh
+fi
 
 eval "$(~/.local/bin/mise activate bash)"
 
-# Install tools declared in mise.toml
-~/.local/bin/mise install
+# 2. Install chezmoi globally via mise (don't read repo mise.toml yet)
+~/.local/bin/mise use -g chezmoi
 
-# Apply dotfiles from current repo
-~/.local/bin/mise exec -- chezmoi -S . -v apply
+# 3. Apply dotfiles — chezmoi copies files and runs run_once_after_* scripts
+chezmoi apply -S "$REPO_DIR"

@@ -1,0 +1,12 @@
+{{ if or (env "REMOTE_CONTAINERS") (env "DEVCONTAINER") }}
+mise.local.toml
+private_dot_devpod
+{{ end }}
+
+# Bootstrap script — not a dotfile to manage
+install.sh
+
+# Ignore pi agent runtime files
+.pi/agent/auth.json
+.pi/agent/sessions/**
+.pi/agent/bin/**
