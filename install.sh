@@ -10,6 +10,7 @@ if [[ ! -x ~/.local/bin/mise ]]; then
     curl https://mise.run | sh
 fi
 
+~/.local/bin/mise trust "$REPO_DIR"
 eval "$(~/.local/bin/mise activate bash)"
 
 # 2. Install chezmoi globally via mise (don't read repo mise.toml yet)
