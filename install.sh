@@ -11,10 +11,9 @@ if [[ ! -x ~/.local/bin/mise ]]; then
 fi
 
 ~/.local/bin/mise trust "$REPO_DIR"
-eval "$(~/.local/bin/mise activate bash)"
 
 # 2. Install chezmoi globally via mise (don't read repo mise.toml yet)
 ~/.local/bin/mise use -g chezmoi
 
 # 3. Apply dotfiles — chezmoi copies files and runs run_once_after_* scripts
-chezmoi apply -S "$REPO_DIR"
+~/.local/bin/mise exec -- chezmoi apply -S "$REPO_DIR"
