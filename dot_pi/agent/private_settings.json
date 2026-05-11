@@ -1,7 +1,7 @@
 {
   "defaultProvider": "ollama-cloud",
   "defaultThinkingLevel": "medium",
-  "hideThinkingBlock": false,
+  "hideThinkingBlock": true,
   "theme": "dark",
   "quietStartup": false,
   "collapseChangelog": false,
