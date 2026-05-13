@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-echo "=== Installing tools via mise ==="
+echo "=== Ensuring mise tools are installed ==="
 
 eval "$(~/.local/bin/mise activate bash)"
 
