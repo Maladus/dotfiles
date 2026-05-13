@@ -1,0 +1,8 @@
+[user]
+    name = Martin Wigger
+    email = martin.wigger@konplan.com
+
+[core]
+    sshcommand = ssh.exe
+
+
