@@ -3,6 +3,6 @@
     email = martin.wigger@konplan.com
 
 [core]
+{{- if env "WSL_DISTRO_NAME" }}
     sshcommand = ssh.exe
-
-
+{{- end }}

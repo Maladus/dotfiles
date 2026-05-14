@@ -7,7 +7,3 @@ fd = "latest"
 tmux = "latest"
 "npm:@earendil-works/pi-coding-agent" = "latest"
 "github:rtk-ai/rtk" = "latest"
-{{- $inContainer := or (env "REMOTE_CONTAINERS") (env "DEVCONTAINER") (env "CODESPACES") (stat "/.dockerenv") (stat "/run/.containerenv") }}
-{{- if not $inContainer }}
-"npm:@devcontainers/cli" = "latest"
-{{- end }}

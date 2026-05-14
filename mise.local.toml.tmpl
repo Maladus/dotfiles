@@ -1,0 +1,6 @@
+[tools]
+{{- $inContainer := or (env "REMOTE_CONTAINERS") (env "DEVCONTAINER") (env "CODESPACES") (stat "/.dockerenv") (stat "/run/.containerenv") }}
+{{- if not $inContainer }}
+"npm:@devcontainers/cli" = "latest"
+{{- end }}
+"aqua:loft-sh/devpod" = "latest"

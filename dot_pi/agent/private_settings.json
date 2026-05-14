@@ -28,7 +28,9 @@
       "maxRetryDelayMs": 60000
     }
   },
-  "packages": [],
+  "packages": [
+    "npm:pi-rtk-optimizer"
+  ],
   "prompts": [
     "prompts"
   ],
