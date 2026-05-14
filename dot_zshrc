@@ -115,8 +115,8 @@ export PATH=$HOME/bin:/usr/local/bin:$HOME/.local/bin:$PATH
 export PATH="$HOME/.opencode/bin:$PATH"
 export PATH="$HOME/.npm-global/bin:$PATH"
 
-# DevPod shortcut — runs devpod up from current directory
-alias devup='devpod up . --dotfiles https://github.com/Maladus/dotfiles.git'
+# DevContainer shortcut — runs devcontainer up from current directory with dotfiles
+alias devup='devcontainer up --workspace-folder . --dotfiles-repository https://github.com/Maladus/dotfiles.git --dotfiles-install-command install.sh --dotfiles-target-path ~/dotfiles'
 
 # Find running dev container (DevPod or VS Code) that mounts current directory
 _devcode_find_container() {

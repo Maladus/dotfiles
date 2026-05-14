@@ -1,9 +1,0 @@
-[tools]
-chezmoi = "2.70.3"
-node = "lts"
-neovim = "stable"
-ripgrep = "latest"
-fd = "latest"
-tmux = "latest"
-gh = "latest"
-"npm:@earendil-works/pi-coding-agent" = "latest"
