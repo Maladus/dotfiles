@@ -1,0 +1,7 @@
+
+
+
+== Inspired Repositorys
+
+- https://github.com/BuriKizilkaya/dotfiles
+- https://github.com/omerxx/dotfiles
