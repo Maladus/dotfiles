@@ -1,0 +1,5 @@
+{{- if and (lookPath "age") (stat "~/.ssh/id_ed25519") }}
+{{ include ".chezmoitemplates/secrets/pi-auth.json.age" | decrypt }}
+{{- else }}
+{}
+{{- end }}

@@ -12,8 +12,8 @@ fi
 
 ~/.local/bin/mise trust "$REPO_DIR"
 
-# 2. Install chezmoi globally via mise (don't read repo mise.toml yet)
-~/.local/bin/mise use -g chezmoi
+# 2. Install chezmoi + age globally via mise (needed before chezmoi apply for encrypted templates)
+~/.local/bin/mise use -g chezmoi age
 
 # 3. Apply dotfiles — chezmoi copies files and runs run_once_after_* scripts
 ~/.local/bin/mise exec -- chezmoi apply -S "$REPO_DIR"
