@@ -5,3 +5,9 @@
 
 - https://github.com/BuriKizilkaya/dotfiles
 - https://github.com/omerxx/dotfiles
+
+== TODO
+
+* [ ] Install and configure Televison - Modern CLI fuzzy finder with smart shell integration
+* [ ] Install and configure gh-dash - Rich GitHub CLI dashboard for PRs/Issues
+
