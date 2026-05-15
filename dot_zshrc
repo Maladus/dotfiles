@@ -116,7 +116,22 @@ export PATH="$HOME/.opencode/bin:$PATH"
 export PATH="$HOME/.npm-global/bin:$PATH"
 
 # DevContainer shortcut — runs devcontainer up from current directory with dotfiles
-alias devup='devcontainer up --workspace-folder . --dotfiles-repository https://github.com/Maladus/dotfiles.git --dotfiles-install-command install.sh --dotfiles-target-path '\''~/dotfiles'\'' ${GITHUB_TOKEN:+--remote-env GITHUB_TOKEN=$GITHUB_TOKEN} ${SSH_AUTH_SOCK:+--mount type=bind,source=${SSH_AUTH_SOCK},target=/tmp/host-ssh-auth.sock --remote-env SSH_AUTH_SOCK=/tmp/host-ssh-auth.sock}'
+unalias devup 2>/dev/null
+function devup {
+    local args=(
+        up
+        --workspace-folder .
+        --dotfiles-repository https://github.com/Maladus/dotfiles.git
+        --dotfiles-install-command install.sh
+        --dotfiles-target-path ~/dotfiles
+    )
+    [[ -n $GITHUB_TOKEN ]] && args+=(--remote-env "GITHUB_TOKEN=$GITHUB_TOKEN")
+    if [[ -n $SSH_AUTH_SOCK ]]; then
+        args+=(--mount "type=bind,source=${SSH_AUTH_SOCK},target=/tmp/host-ssh-auth.sock")
+        args+=(--remote-env "SSH_AUTH_SOCK=/tmp/host-ssh-auth.sock")
+    fi
+    devcontainer "${args[@]}"
+}
 
 # Find running dev container (DevPod or VS Code) that mounts current directory
 _devcode_find_container() {
