@@ -177,12 +177,16 @@ devdock() {
         return 1
     fi
     local cid="${result#*:}"
-    # Detect the container's default user and workspace path
-    local cont_user
-    cont_user=$(docker exec "$cid" sh -c 'echo ${SUDO_USER:-${USER}}' 2>/dev/null || echo vscode)
+    # Use 'vscode' user (standard for mcr.microsoft.com/devcontainers images)
+    # Fall back to default (root) if that doesn't exist
+    local cont_user=vscode
+    if ! docker exec "$cid" id vscode >/dev/null 2>&1; then
+        cont_user=root
+    fi
+    # Derive workspace path from the mount that matches PWD
     local cont_workdir
-    cont_workdir=$(docker exec "$cid" sh -c 'echo ${CONTAINER_WORKSPACE_FOLDER:-${WORKSPACE_FOLDER:-/workspaces/${REPO_SLUG}}}' 2>/dev/null)
-    [[ -z "$cont_workdir" ]] && cont_workdir=$(docker inspect "$cid" --format '{{range .Mounts}}{{if eq .Destination "/workspaces"}}/workspaces{{end}}{{end}}' 2>/dev/null)
+    local pwd_="$PWD"
+    cont_workdir=$(docker inspect "$cid" --format '{{range .Mounts}}{{if eq .Source "'"$pwd_"'"}}{{.Destination}}{{end}}{{end}}' 2>/dev/null)
     [[ -z "$cont_workdir" ]] && cont_workdir="/workspaces/$(basename "$PWD")"
     docker exec -it -u "$cont_user" -w "$cont_workdir" -e TERM="$TERM" ${SSH_AUTH_SOCK:+-e SSH_AUTH_SOCK="$SSH_AUTH_SOCK"} "$cid" /bin/zsh
 }
