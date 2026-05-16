@@ -177,7 +177,10 @@ devdock() {
         return 1
     fi
     local cid="${result#*:}"
-    docker exec -it -e TERM="$TERM" ${SSH_AUTH_SOCK:+-e SSH_AUTH_SOCK="$SSH_AUTH_SOCK"} "$cid" /bin/zsh
+    # Detect the container's default user (DevPod uses 'vscode', not 'dev')
+    local cont_user
+    cont_user=$(docker exec "$cid" sh -c 'echo ${SUDO_USER:-${USER}}' 2>/dev/null || echo vscode)
+    docker exec -it -u "$cont_user" -w /workspace -e TERM="$TERM" ${SSH_AUTH_SOCK:+-e SSH_AUTH_SOCK="$SSH_AUTH_SOCK"} "$cid" /bin/zsh
 }
 
 # Zoxide
