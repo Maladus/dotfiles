@@ -189,7 +189,7 @@ devdock() {
     # Derive workspace path from the mount that matches PWD
     local cont_workdir
     local pwd_="$PWD"
-    cont_workdir=$(docker inspect "$cid" --format '{{range .Mounts}}{{if eq .Source "'"$pwd_"'"}}{{.Destination}}{{end}}{{end}}' 2>/dev/null)
+    cont_workdir=$(docker inspect "$cid" --format='{{json .Mounts}}' 2>/dev/null | python3 -c "import sys,json; mounts=json.load(sys.stdin); matches=[m['Destination'] for m in mounts if m['Source']=='$pwd_']; print(matches[0] if matches else '')")
     [[ -z "$cont_workdir" ]] && cont_workdir="/workspaces/$(basename "$PWD")"
     docker exec -it -u "$cont_user" -w "$cont_workdir" -e TERM="$TERM" ${SSH_AUTH_SOCK:+-e SSH_AUTH_SOCK="$SSH_AUTH_SOCK"} "$cid" /bin/zsh
 }
