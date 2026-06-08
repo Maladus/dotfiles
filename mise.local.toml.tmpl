@@ -2,4 +2,7 @@
 {{- $inContainer := or (env "REMOTE_CONTAINERS") (env "DEVCONTAINER") (env "CODESPACES") (stat "/.dockerenv") (stat "/run/.containerenv") }}
 {{- if not $inContainer }}
 "npm:@devcontainers/cli" = "latest"
+
+rust = "latest"
+"cargo:devcontainer" = "latest"
 {{- end }}

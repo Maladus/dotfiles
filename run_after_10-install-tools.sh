@@ -9,10 +9,10 @@ eval "$(~/.local/bin/mise activate bash)"
 ~/.local/bin/mise trust ~/mise.toml 2>/dev/null || true
 ~/.local/bin/mise trust ~/mise.local.toml 2>/dev/null || true
 
-# Suppress npm deprecation warnings from transitive deps (e.g. pi-coding-agent)
-export NPM_CONFIG_LOGLEVEL=error
-
 # Install all tools (mise auto-merges mise.toml + mise.local.toml)
 ~/.local/bin/mise install
+
+# Upgrade any tools already installed (e.g. pins like `latest` don't auto-upgrade)
+~/.local/bin/mise up
 
 echo "=== Tools installed ==="
