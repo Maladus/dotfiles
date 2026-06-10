@@ -33,7 +33,5 @@
   ],
   "prompts": [
     "prompts"
-  ],
-  "lastChangelogVersion": "0.74.0",
-  "defaultModel": "kimi-k2.6"
+  ]
 }
