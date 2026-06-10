@@ -2,17 +2,8 @@
   "providers": {
     "github-copilot": {
       "modelOverrides": {
-        "gpt-4.1": {
-          "cost": { "input": 2.00, "output": 8.00, "cacheRead": 0.50, "cacheWrite": 0 }
-        },
         "gpt-5-mini": {
           "cost": { "input": 0.25, "output": 2.00, "cacheRead": 0.025, "cacheWrite": 0 }
-        },
-        "gpt-5.2": {
-          "cost": { "input": 1.75, "output": 14.00, "cacheRead": 0.175, "cacheWrite": 0 }
-        },
-        "gpt-5.2-codex": {
-          "cost": { "input": 1.75, "output": 14.00, "cacheRead": 0.175, "cacheWrite": 0 }
         },
         "gpt-5.3-codex": {
           "cost": { "input": 1.75, "output": 14.00, "cacheRead": 0.175, "cacheWrite": 0 }
@@ -23,11 +14,11 @@
         "gpt-5.4-mini": {
           "cost": { "input": 0.75, "output": 4.50, "cacheRead": 0.075, "cacheWrite": 0 }
         },
+        "gpt-5.4-nano": {
+          "cost": { "input": 0.20, "output": 1.25, "cacheRead": 0.02, "cacheWrite": 0 }
+        },
         "gpt-5.5": {
           "cost": { "input": 5.00, "output": 30.00, "cacheRead": 0.50, "cacheWrite": 0 }
-        },
-        "gpt-5.1-codex": {
-          "cost": { "input": 1.25, "output": 10.00, "cacheRead": 0.125, "cacheWrite": 0 }
         },
         "claude-haiku-4.5": {
           "cost": { "input": 1.00, "output": 5.00, "cacheRead": 0.10, "cacheWrite": 1.25 }
@@ -50,6 +41,12 @@
         "claude-opus-4.7": {
           "cost": { "input": 5.00, "output": 25.00, "cacheRead": 0.50, "cacheWrite": 6.25 }
         },
+        "claude-opus-4.8": {
+          "cost": { "input": 5.00, "output": 25.00, "cacheRead": 0.50, "cacheWrite": 6.25 }
+        },
+        "claude-fable-5": {
+          "cost": { "input": 10.00, "output": 50.00, "cacheRead": 1.00, "cacheWrite": 12.50 }
+        },
         "gemini-2.5-pro": {
           "cost": { "input": 1.25, "output": 10.00, "cacheRead": 0.125, "cacheWrite": 0 }
         },
@@ -58,6 +55,15 @@
         },
         "gemini-3.1-pro-preview": {
           "cost": { "input": 2.00, "output": 12.00, "cacheRead": 0.20, "cacheWrite": 0 }
+        },
+        "gemini-3.5-flash": {
+          "cost": { "input": 1.50, "output": 9.00, "cacheRead": 0.15, "cacheWrite": 0 }
+        },
+        "raptor-mini": {
+          "cost": { "input": 0.25, "output": 2.00, "cacheRead": 0.025, "cacheWrite": 0 }
+        },
+        "mai-code-1-flash": {
+          "cost": { "input": 0.75, "output": 4.50, "cacheRead": 0.075, "cacheWrite": 0 }
         }
       }
     }
